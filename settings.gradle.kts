@@ -11,5 +11,5 @@ dependencyResolutionManagement {
     }
 }
 
-include(":kbindgen-generator")
+include(":kbindgen-generator", ":kbindgen-gradle-plugin", ":kbindgen-runtime")
 rootProject.name = "kbindgen"
