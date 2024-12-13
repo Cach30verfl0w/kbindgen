@@ -34,3 +34,4 @@ JNIEXPORT jlong JNICALL Java_de_cacheoverflow_kbindgen_runtime_LibLoaderWrapper_
 JNIEXPORT jint JNICALL Java_de_cacheoverflow_kbindgen_runtime_LibLoaderWrapper_dlclose(JNIEnv* env, jlong handle) {
     return dlclose(reinterpret_cast<void*>(handle));
 }
+
