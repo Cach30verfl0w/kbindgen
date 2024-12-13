@@ -11,11 +11,7 @@ import kotlin.use
  */
 interface Type {
     val headerSpelling: String
-    val kotlinNativeSpelling: String
-    val kotlinNativePtrSpelling: String
-    val kotlinJvmSpelling: String
-    val isPointer: Boolean
-    val isOpaque: Boolean
+    val kotlinSpelling: String
     val modifier: Modifier
     
     fun makePointer(modifier: Modifier = Modifier.NONE): Type = PointerType(this, modifier)
