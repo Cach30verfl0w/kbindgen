@@ -13,4 +13,5 @@ fun main() {
         listOf(includeFolder.resolve("llvm-c").resolve("Core.h")),
         listOf(includeFolder)
     )
+    analyzer.functions.forEach { println(it) }
 }

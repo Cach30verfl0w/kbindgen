@@ -1,5 +1,6 @@
 package de.cacheoverflow.kbindgen.generator
 
+import de.cacheoverflow.kbindgen.generator.models.FunctionModel
 import de.cacheoverflow.kbindgen.generator.type.Type
 import de.cacheoverflow.kbindgen.generator.util.LLVMHelper
 import org.lwjgl.llvm.CXCursor
@@ -16,11 +17,22 @@ import kotlin.io.path.absolutePathString
  * This class is the implementation of the class for analyzing and modelling C file headers into a Kotlin model ready for the generation of
  * Kotlin to C bindings. It uses Clang to analyze the headers, so the developer needs to initialize LLVM with the [LLVMHelper] util.
  *
+ * @param targetHeaderFiles The paths to the header files to be analyzed by this class
+ * @param includeFolders    The additional include paths passed through to Clang
+ * @param headerFilter      The filter for include paths to be analyzed
+ *
  * @author Cedric Hammes
  * @since  12/12/2024
  */
-class HeaderAnalyzer(targetHeaderFiles: List<Path>, val includeFolders: List<Path>) : CXCursorVisitorI {
+class HeaderAnalyzer(
+    targetHeaderFiles: List<Path>,
+    val includeFolders: List<Path>,
+    val headerFilter: (Path) -> Boolean = { true }
+) : CXCursorVisitorI {
     private val skipHeaderFiles: MutableList<Path> = mutableListOf()
+    private val _functions: MutableList<FunctionModel> = mutableListOf()
+    val functions: List<FunctionModel>
+        get() = _functions
     
     init {
         if (!LLVMHelper.isLLVMLoaded) {
@@ -60,31 +72,30 @@ class HeaderAnalyzer(targetHeaderFiles: List<Path>, val includeFolders: List<Pat
                 CXString.create().use { ClangIndex.clang_getCString(ClangIndex.clang_getFileName(file.get(0), it)) }
             }))
         }.also { skipHeaderFiles.add(it) }
+        if (!headerFilter(headerPath))
+            return ClangIndex.CXChildVisit_Continue
         
-        // Process different operations
+        // Process different operations TODO: simple macros expansion in Kotlin (consts), structs, enums etc.
         when (ClangIndex.clang_getCursorKind(current)) {
-            /*ClangIndex.CXCursor_TypedefDecl -> {
-                val underlyingType = CXType.create().use { ClangIndex.clang_getTypedefDeclUnderlyingType(current, it).getSpelling() }
-                val type = current.getSpelling()
-            }*/
-            
             ClangIndex.CXCursor_FunctionDecl -> {
                 val functionName = current.getSpelling()
-                val functionBuilder = StringBuilder().append(functionName).append("(")
                 
                 // Analyze function arguments and return type
                 CXType.create().also { ClangIndex.clang_getCursorType(current, it) }.use { functionType ->
+                    val arguments: MutableList<Type> = mutableListOf()
+                    
+                    // Generate arguments
                     for (i in 0..<ClangIndex.clang_getNumArgTypes(functionType)) {
-                        val argumentType = CXType.create().use { Type.from(ClangIndex.clang_getArgType(functionType, i, it)) }
-                            ?: return ClangIndex.CXChildVisit_Recurse
-                        functionBuilder.append(", ").append(argumentType.kotlinNativeSpelling)
+                        arguments.add(CXType.create().use { Type.from(ClangIndex.clang_getArgType(functionType, i, it)) }
+                            ?: return ClangIndex.CXChildVisit_Continue)
                     }
                     
-                    // Analyze return type
+                    // Generate return type
                     val returnType = CXType.create().use { Type.from(ClangIndex.clang_getResultType(functionType, it)) }
-                        ?: return ClangIndex.CXChildVisit_Recurse
-                    functionBuilder.append("): ").append(returnType.kotlinNativeSpelling)
-                    println(functionBuilder.toString().replaceFirst(", ", ""))
+                        ?: return ClangIndex.CXChildVisit_Continue
+                    
+                    // Generate function
+                    _functions.add(FunctionModel(functionName, arguments, returnType))
                 }
             }
             
