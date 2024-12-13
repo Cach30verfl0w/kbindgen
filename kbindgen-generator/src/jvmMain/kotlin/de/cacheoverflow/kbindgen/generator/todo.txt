@@ -1,0 +1,7 @@
+Binding for JVM target (a.e. "void* test(char* test)") for C wrapper functions:
+JNIEXPORT auto JNICALL Java_com_example_project_test_wrap(JNIEnv* env, jlong ptr, jlong test) -> jlong {
+    *reinterpret_cast<test>(ptr)(reinterpret_cast<char*>(test));
+}
+
+internal class LoadableLibrary(private val libraryPointer: Int) {
+}

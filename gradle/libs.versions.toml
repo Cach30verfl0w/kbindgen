@@ -1,0 +1,13 @@
+[versions]
+kbindgen = "1.0.0"
+kotlin = "2.1.0" # https://kotlinlang.org/docs/releases.html#release-details
+lwjgl = "3.3.4" # https://github.com/LWJGL/lwjgl3/releases
+
+[libraries]
+
+# LWJGL
+lwjgl-base = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
+lwjgl-llvm = { module = "org.lwjgl:lwjgl-llvm", version.ref = "lwjgl" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
