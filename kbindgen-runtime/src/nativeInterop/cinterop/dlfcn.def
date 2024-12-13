@@ -1,0 +1,12 @@
+package = dlfcn
+headers = dlfcn.h
+
+linkerOpts.osx = -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib -ldl
+linkerOpts.linux = -L/usr/lib -ldl
+
+staticLibraries.mingw = libssp.a libdl.a
+libraryPaths.mingw = nativeInterop/dlfcn/windows/lib
+
+compilerOpts.osx = -InativeInterop/dlfcn/macos/include
+compilerOpts.linux = -InativeInterop/dlfcn/linux/include
+compilerOpts.mingw = -InativeInterop/dlfcn/windows/include
