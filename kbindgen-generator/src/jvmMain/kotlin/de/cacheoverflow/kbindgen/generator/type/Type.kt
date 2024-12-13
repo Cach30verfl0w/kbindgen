@@ -14,7 +14,7 @@ interface Type {
     val kotlinSpelling: String
     val modifier: Modifier
     
-    fun makePointer(modifier: Modifier = Modifier.NONE): Type = PointerType(this, modifier)
+    fun makePointer(modifier: Modifier = Modifier.NONE): Type = PointerType(modifier)
     fun withModifier(modifier: Modifier): Type = WithModifierType(modifier, this)
     
     companion object {
