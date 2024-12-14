@@ -20,21 +20,12 @@ import de.cacheoverflow.kbindgen.generator.type.Type
 
 data class FunctionModel(val name: String, val parameters: List<Type>, val returnType: Type) {
     
-    /*fun generateJNIGlueCode(javaClass: String): String {
-        val functionBuilder = StringBuilder()
-        /*functionBuilder
-            .append("JNIEXPORT ${returnType.headerSpelling} JNICALL Java_${javaClass.replace(".", "_")}_$name(")
-            .append("JNIEnv* env, jlong ptr")
-            .append(parameters.joinToString("") { ", ${it.headerSpelling} var_${parameterCounter++}" })
-            .append(") {\n")
-        functionBuilder.append("    *reinterpret_cast<$name>(ptr)(${})\n")
-        functionBuilder.append("}\n")*/
-        
-        // JNIEXPORT auto JNICALL Java_com_example_project_test_wrap(JNIEnv* env, jlong ptr, jlong test) -> jlong {
-        //    return *reinterpret_cast<test>(ptr)(reinterpret_cast<char*>(test)); // TODO: Reinterpret cast for return output?
-        //}
-        return functionBuilder.toString()
-    }*/
+    // Kotlin/Native function reference generation
+    fun generateKotlinNativeTypeAlias(): String =
+        "internal typealias ${name}Func = (${parameters.joinToString(", ") { it.kotlinSpelling }}) -> ${returnType.kotlinSpelling}"
+    
+    fun generateFunctionField(): String =
+        "private val func$name: CPointer<CFunction<${name}Func>> by lazy { library.findFunction(\"$name\") }"
     
     override fun toString(): String = "$name(${parameters.joinToString(", ")}): $returnType"
 }

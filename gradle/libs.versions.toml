@@ -3,7 +3,11 @@ kbindgen = "1.0.0"
 kotlin = "2.1.0" # https://kotlinlang.org/docs/releases.html#release-details
 lwjgl = "3.3.4" # https://github.com/LWJGL/lwjgl3/releases
 
+# JVM
+jvmTarget = "17"
+
 [libraries]
+kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 # LWJGL
 lwjgl-base = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
@@ -11,3 +15,4 @@ lwjgl-llvm = { module = "org.lwjgl:lwjgl-llvm", version.ref = "lwjgl" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

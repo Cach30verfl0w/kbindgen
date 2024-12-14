@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
+    id("maven-publish")
 }
+
+group = "de.cacheoverflow.kbindgen"
+version = libs.versions.kbindgen.get()
 
 kotlin {
     jvm()

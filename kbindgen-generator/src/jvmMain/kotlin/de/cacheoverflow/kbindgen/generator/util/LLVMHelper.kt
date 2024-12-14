@@ -27,7 +27,7 @@ import kotlin.io.path.isDirectory
  * @author Cedric Hammes
  * @since  12/12/2024
  */
-internal object LLVMHelper {
+object LLVMHelper {
     private val BASE_PATHS: Array<String> = arrayOf("/usr/share/lib", "/usr/local/opt", "/usr/lib", "/")
     private val SUB_PATHS: Array<String> = arrayOf("llvm-{}/build/Release", "llvm/build/Release", "llvm@{}", "llvm-{}", "llvm")
     private val VERSIONS: ByteArray = byteArrayOf(20, 19, 18, 17, 16)

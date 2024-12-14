@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2024 Cedric Hammes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#pragma once
+package de.cacheoverflow.kbindgen.gradle
 
-#include <jni.h>
+import org.gradle.api.file.DirectoryProperty
 
-JNIEXPORT jlong JNICALL Java_de_cacheoverflow_kbindgen_runtime_LibLoaderWrapper_dlopen(JNIEnv* env, jstring path);
-JNIEXPORT jlong JNICALL Java_de_cacheoverflow_kbindgen_runtime_LibLoaderWrapper_dlsym(JNIEnv* env, jlong handle, jstring name);
-JNIEXPORT jint JNICALL Java_de_cacheoverflow_kbindgen_runtime_LibLoaderWrapper_dlclose(JNIEnv* env, jlong handle);
-<
+interface BindgenExtension {
+    val llvmFolder: DirectoryProperty
+}
