@@ -31,7 +31,6 @@ interface Type {
     val modifier: Modifier
     
     fun makePointer(modifier: Modifier = Modifier.NONE): Type = PointerType(modifier)
-    fun withModifier(modifier: Modifier): Type = WithModifierType(modifier, this)
     
     companion object {
         fun from(type: CXType): Type? = when (type.kind()) { // TODO: Add support for const modifier

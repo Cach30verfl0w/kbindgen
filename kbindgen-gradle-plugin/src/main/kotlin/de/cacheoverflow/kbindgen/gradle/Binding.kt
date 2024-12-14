@@ -16,11 +16,15 @@
 
 package de.cacheoverflow.kbindgen.gradle
 
-import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Named
+import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.ListProperty
+import java.io.File
 
-interface BindgenExtension {
-    val llvmFolder: DirectoryProperty
+interface Binding : Named {
     val generatedSourcesFolder: DirectoryProperty
-    val bindings: NamedDomainObjectContainer<Binding>
+    val headers: ListProperty<String>
+    val includeFolders: ListProperty<File>
+    val clangAnalyzerArgs: ListProperty<String>
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2024 Cedric Hammes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-package de.cacheoverflow.kbindgen.generator.type
+package de.cacheoverflow.kbindgen.generator
 
-class WithModifierType(override val modifier: Modifier, private val underlyingType: Type) : Type by underlyingType {
-    override fun toString(): String = underlyingType.toString()
+import de.cacheoverflow.kbindgen.generator.util.LLVMHelper
+import kotlin.io.path.absolutePathString
+
+fun main(args: Array<String>) {
+    println(LLVMHelper.getBaseDirectory().absolutePathString())
+    LLVMHelper.loadLibrary(LLVMHelper.getBaseDirectory())
+    println(args.joinToString(" "))
 }
-

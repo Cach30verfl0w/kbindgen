@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.shadow).apply(false)
     id("maven-publish")
     `java-gradle-plugin`
 }
@@ -22,6 +23,12 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+tasks.withType<ProcessResources> {
+    from(project(":kbindgen-generator").layout.buildDirectory.file("libs/kbindgen-generator-1.0.0.jar").get().asFile) {
+        rename("kbindgen-generator-$version.jar", "binding-generator-executable.jar")
+    }
+}
+
 gradlePlugin {
     plugins {
         create("bindgen-plugin") {
@@ -36,7 +43,6 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation(project(":kbindgen-generator"))
     compileOnly(kotlin("stdlib"))
     compileOnly(gradleApi())
     compileOnly(libs.kotlin.plugin)
