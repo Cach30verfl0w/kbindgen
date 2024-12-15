@@ -3,7 +3,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.shadow)
-    id("maven-publish")
     application
 }
 
@@ -46,6 +45,7 @@ kotlin {
             
             addLWJGLDependency(libs.lwjgl.base)
             addLWJGLDependency(libs.lwjgl.llvm)
+            implementation(libs.clikt)
         }
     }
 }
