@@ -1,14 +1,9 @@
 # KBindgen
 
 KBindgen is an **WIP** library which allows developers to generate native bindings for Kotlin/Native and Kotlin/JVM that can be loaded dynamically at runtime for Kotlin-Multiplatform by specifying C headers (with Clang's tooling library). This code comes in the following modules:
-- (embeddable) generator application (used in the Gradle plugin)
+- Generator application (used in the Gradle plugin but can be used independently)
 - Gradle plugin wrapping the generation tooling and some parts of the compilation (especially for the JNI glue code)
-
-## How does this work?
-The core element of KBindgen is the LLVM compiler toolchain, especially Clang's tooling library. It analyzes the 
-specified headers and converts them into convertible object models. These models can be translated into
-- Kotlin/JVM code with JNI interop glue code for calling these functions by pointer,
-- Kotlin/Native code with CInterop types for some compatibility.
+- Runtime library containing the `dlfcn` wrapper code for Kotlin/Native and Kotlin/JVM
 
 ## Dependencies
 Without the wonderful work of the following people, my work on this project would have been much more difficult.
